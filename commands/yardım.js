@@ -3,8 +3,8 @@ const fs = require('fs');
 
 exports.run = async (client, message, args) => {
   const embed = new EmbedBuilder()
-    .setTitle("Swenzy Development | Yardım Menüsü")
-    .setDescription("✅ Merhaba, **Swenzy Development** Yardım Menüsüne Hoşgeldin! 🎉\n\n➡️ Aşağıdaki menüden **Swenzy Development** botunda kullanabileceğin komutlar listelenecektir.\n\n📍 Eğer komutlarda hata veya bug görürsen <@1195760072068972577> veya [Yardım Sunucuma](https://discord.gg/react) gelerek iletişime geçebilirsin")
+    .setTitle("ExBOT | Yardım Menüsü")
+    .setDescription("✅ Merhaba, **ExBOT** Yardım Menüsüne Hoşgeldin! 🎉\n\n➡️ Aşağıdaki menüden **ExBOT** botunda kullanabileceğin komutlar listelenecektir.\n\n📍 Eğer komutlarda hata veya bug görürsen <@1195760072068972577> veya [Yardım Sunucuma](https://discord.gg/excode) gelerek iletişime geçebilirsin")
     .setColor("Random")
     .setFooter({ text: `${client.user.username} | Sürüm ${client.config.version}`, iconURL: client.user.displayAvatarURL() })
     .setTimestamp();
@@ -67,17 +67,17 @@ exports.run = async (client, message, args) => {
     switch(selection) {
       case 'kullanıcı':
         updatedEmbed
-          .setTitle("Swenzy Development | Kullanıcı Komutları")
+          .setTitle("ExBOT | Kullanıcı Komutları")
           .setDescription(kullanıcıKomutları.join('\n'));
         break;
       case 'moderasyon':
         updatedEmbed
-          .setTitle("Swenzy Development | Moderasyon Komutları")
+          .setTitle("ExBOT | Moderasyon Komutları")
           .setDescription(moderasyonKomutları.join('\n'));
         break;
       case 'sahip':
         updatedEmbed
-          .setTitle("Swenzy Development | Sahip Komutları")
+          .setTitle("ExBOT | Sahip Komutları")
           .setDescription(sahipKomutları.join('\n'));
         break;
     }
