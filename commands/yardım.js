@@ -34,17 +34,17 @@ exports.run = async (client, message, args) => {
         .setPlaceholder('Bir kategori seçin')
         .addOptions([
           {
-            label: ':darkstick: Kullanıcı Komutları',
+            label: '🔧 Kullanıcı Komutları',
             description: 'Herkesin kullanabileceği genel komutlar',
             value: 'kullanıcı',
           },
           {
-            label: ':darkstick: Moderasyon Komutları',
+            label: '🛡️ Moderasyon Komutları',
             description: 'Yetkililerin kullanabileceği moderasyon komutları',
             value: 'moderasyon',
           },
           {
-            label: ':darkstick: Sahip Komutları',
+            label: '🛠️ Sahip Komutları',
             description: 'Sadece bot sahibinin kullanabileceği komutlar',
             value: 'sahip',
           },
