@@ -1,33 +1,50 @@
-module.exports = async (client, message) => {
-  if (message.author.bot) return;
-  if (!message.guild) return;
-  
-  const prefix = client.config.prefix;
-  
-  if (!message.content.startsWith(prefix)) return;
-  
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
-  
-  const cmd = client.commands.get(command);
-  
-  if (!cmd) return;
-  
-  if (cmd.help.kategori === "Sahip" && message.author.id !== client.config.ownerID) {
-    return message.reply("Bu komutu sadece bot sahibi kullanabilir.");
-  }
-  
-  if (cmd.help.kategori === "Moderasyon") {
-    const permissions = message.member.permissions;
-    if (!permissions.has("ManageMessages") && !permissions.has("Administrator")) {
-      return message.reply("Bu komutu kullanmak için gerekli yetkilere sahip değilsiniz.");
+import { EmbedBuilder } from "discord.js";
+
+export default {
+  name: "messageCreate",
+  async execute(message, client) {
+    if (!client.afk) client.afk = new Map();
+
+    // Bot mesajlarını yok say
+    if (message.author.bot) return;
+
+    // =============================
+    // 🔹 SA-AS OTOMATİK CEVAP
+    // =============================
+    const content = message.content.toLowerCase();
+
+    if (["sa", "sea", "selam", "selamun aleyküm", "selamün aleyküm"].includes(content)) {
+      const embed = new EmbedBuilder()
+        .setColor("Green")
+        .setDescription(`👋 Aleyküm Selam **${message.author.username}**, hoş geldin! 💫`);
+      return message.reply({ embeds: [embed] });
     }
-  }
-  
-  try {
-    cmd.run(client, message, args);
-  } catch (e) {
-    console.error(e);
-    message.reply("Komut çalıştırılırken bir hata oluştu.");
-  }
+
+    // =============================
+    // 🔹 AFK SİSTEMİ
+    // =============================
+
+    // Eğer kullanıcı AFK’ysa ve mesaj yazarsa
+    if (client.afk.has(message.author.id)) {
+      client.afk.delete(message.author.id);
+
+      const embed = new EmbedBuilder()
+        .setColor("Blue")
+        .setDescription(`👋 Hoş geldin **${message.author.username}**, AFK modundan çıktın!`);
+      message.reply({ embeds: [embed] });
+    }
+
+    // Eğer birini mention'luyorsa ve o kişi AFK'ysa
+    if (message.mentions.users.size > 0) {
+      message.mentions.users.forEach(user => {
+        if (client.afk.has(user.id)) {
+          const data = client.afk.get(user.id);
+          const embed = new EmbedBuilder()
+            .setColor("Yellow")
+            .setDescription(`💤 **${user.username}** şu anda AFK.\n📝 Sebep: ${data.reason}`);
+          message.reply({ embeds: [embed] });
+        }
+      });
+    }
+  },
 };

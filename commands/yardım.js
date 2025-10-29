@@ -1,97 +1,111 @@
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const fs = require('fs');
+import {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  StringSelectMenuBuilder,
+  ActionRowBuilder,
+} from "discord.js";
 
-exports.run = async (client, message, args) => {
-  const embed = new EmbedBuilder()
-    .setTitle("Swenzy Development | Yardım Menüsü")
-    .setDescription("✅ Merhaba, **Swenzy Development** Yardım Menüsüne Hoşgeldin! 🎉\n\n➡️ Aşağıdaki menüden **Swenzy Development** botunda kullanabileceğin komutlar listelenecektir.\n\n📍 Eğer komutlarda hata veya bug görürsen <@1195760072068972577> veya [Yardım Sunucuma](https://discord.gg/react) gelerek iletişime geçebilirsin")
-    .setColor("Random")
-    .setFooter({ text: `${client.user.username} | Sürüm ${client.config.version}`, iconURL: client.user.displayAvatarURL() })
-    .setTimestamp();
+export const data = new SlashCommandBuilder()
+  .setName("yardım")
+  .setDescription("Tüm komut kategorilerini görüntülersin.");
 
-  const kullanıcıKomutları = [];
-  const moderasyonKomutları = [];
-  const sahipKomutları = [];
+export async function execute(interaction) {
+  const categories = {
+    "🧩 Genel": [
+      "`/ping`",
+      "`/profil`",
+      "`/server`",
+      "`/say`",
+      "`/bot-bilgi`",
+      "`/avatar`",
+    ],
+    "🎮 Eğlence": [
+      "`/zar`",
+      "`/şaka`",
+      "`/yazıtura`",
+      "`/doğrulukcesaret`",
+      "`/meme`",
+      "`/ship`",
+    ],
+    "🛠️ Moderasyon": [
+      "`/ban`",
+      "`/kick`",
+      "`/lock`",
+      "`/unlock`",
+      "`/temizle`",
+      "`/timeout`",
+      "`/uyarı-at`",
+      "`/uyarı-liste`",
+    ],
+    "🎫 Destek & Giriş": [
+      "`/destek-sistemi`",
+      "`/destek-sistemi-sıfırla`",
+      "`/giriş-çıkış`",
+      "`/giriş-çıkış-kapat`",
+      "`/sa-as`",
+    ],
+    "📊 Bilgi & Araçlar": [
+      "`/stat`",
+      "`/snipe`",
+      "`/yavaş-mod`",
+      "`/yasaklı-kelime`",
+      "`/afk`",
+    ],
+    "👑 Sahip": ["`/owner`", "`/bot`"],
+  };
 
-  client.commands.forEach(cmd => {
-    switch(cmd.help.kategori) {
-      case "Kullanıcı":
-        kullanıcıKomutları.push(`\`${client.config.prefix}${cmd.help.name}\`: ${cmd.help.açıklama}`);
-        break;
-      case "Moderasyon":
-        moderasyonKomutları.push(`\`${client.config.prefix}${cmd.help.name}\`: ${cmd.help.açıklama}`);
-        break;
-      case "Sahip":
-        sahipKomutları.push(`\`${client.config.prefix}${cmd.help.name}\`: ${cmd.help.açıklama}`);
-        break;
-    }
-  });
-
-  const row = new ActionRowBuilder()
-    .addComponents(
-      new StringSelectMenuBuilder()
-        .setCustomId('help_menu')
-        .setPlaceholder('Bir kategori seçin')
-        .addOptions([
-          {
-            label: ':darkstick: Kullanıcı Komutları',
-            description: 'Herkesin kullanabileceği genel komutlar',
-            value: 'kullanıcı',
-          },
-          {
-            label: ':darkstick: Moderasyon Komutları',
-            description: 'Yetkililerin kullanabileceği moderasyon komutları',
-            value: 'moderasyon',
-          },
-          {
-            label: ':darkstick: Sahip Komutları',
-            description: 'Sadece bot sahibinin kullanabileceği komutlar',
-            value: 'sahip',
-          },
-        ]),
+  const selectMenu = new StringSelectMenuBuilder()
+    .setCustomId("yardim-menu")
+    .setPlaceholder("Bir kategori seçin 📂")
+    .addOptions(
+      Object.keys(categories).map((kategori) => ({
+        label: kategori.replace(/[^a-zA-ZğüşöçıİĞÜŞÖÇ0-9\s]/g, ""),
+        description: `${kategori} komutlarını görüntüle`,
+        value: kategori,
+      }))
     );
 
-  const helpMessage = await message.channel.send({ embeds: [embed], components: [row] });
+  const row = new ActionRowBuilder().addComponents(selectMenu);
 
-  const filter = i => i.customId === 'help_menu' && i.user.id === message.author.id;
-  const collector = message.channel.createMessageComponentCollector({ filter, time: 60000 });
+  const embed = new EmbedBuilder()
+    .setTitle("💫 Swenzy Yardım Menüsü")
+    .setDescription("Aşağıdaki menüden bir **kategori seçin** ve o kategorideki komutları görün.")
+    .setColor("Blurple")
+    .setThumbnail(interaction.client.user.displayAvatarURL())
+    .setFooter({ text: "Swenzy Project | By Excode" });
 
-  collector.on('collect', async i => {
-    const selection = i.values[0];
-    
-    const updatedEmbed = new EmbedBuilder()
-      .setColor("Random")
-      .setFooter({ text: `${client.user.username} | Sürüm ${client.config.version}`, iconURL: client.user.displayAvatarURL() })
-      .setTimestamp();
+  await interaction.reply({
+    embeds: [embed],
+    components: [row],
+  });
 
-    switch(selection) {
-      case 'kullanıcı':
-        updatedEmbed
-          .setTitle("Swenzy Development | Kullanıcı Komutları")
-          .setDescription(kullanıcıKomutları.join('\n'));
-        break;
-      case 'moderasyon':
-        updatedEmbed
-          .setTitle("Swenzy Development | Moderasyon Komutları")
-          .setDescription(moderasyonKomutları.join('\n'));
-        break;
-      case 'sahip':
-        updatedEmbed
-          .setTitle("Swenzy Development | Sahip Komutları")
-          .setDescription(sahipKomutları.join('\n'));
-        break;
+  const collector = interaction.channel.createMessageComponentCollector({
+    filter: (i) => i.user.id === interaction.user.id && i.customId === "yardim-menu",
+    time: 60000,
+  });
+
+  collector.on("collect", async (i) => {
+    const selected = i.values[0];
+    const komutlar = categories[selected];
+
+    if (!komutlar) {
+      return i.reply({ content: "Bu kategoriye ait komut bulunamadı!", ephemeral: true });
     }
 
-    await i.update({ embeds: [updatedEmbed], components: [row] });
+    const kategoriEmbed = new EmbedBuilder()
+      .setTitle(`${selected} Komutları`)
+      .setDescription(komutlar.join("\n"))
+      .setColor("Green")
+      .setFooter({ text: "Swenzy Yardım Menüsü 💫" });
+
+    await i.update({ embeds: [kategoriEmbed], components: [row] });
   });
 
-  collector.on('end', () => {
-    helpMessage.edit({ components: [] }).catch(() => {});
+  collector.on("end", async () => {
+    try {
+      await interaction.editReply({
+        components: [],
+      });
+    } catch {}
   });
-};
-
-exports.help = {
-  name: "yardım",
-  kategori: "Kullanıcı", 
-  açıklama: "Komutları kategoriye göre listeler"
-};
+}

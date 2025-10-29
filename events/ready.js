@@ -1,24 +1,36 @@
-module.exports = (client) => {
-  console.log(`${client.user.tag} hazır!`);
-  
-  let statusIndex = 0;
-  
-  const updateStatus = () => {
-    if (!client.config.status || client.config.status.length === 0) return;
-    
-    let status = client.config.status[statusIndex];
-    
-    status = status
-      .replace('{prefix}', client.config.prefix)
-      .replace('{serverCount}', client.guilds.cache.size)
-      .replace('{memberCount}', client.guilds.cache.reduce((a, g) => a + g.memberCount, 0))
-      .replace('{version}', client.config.version);
-    
-    client.user.setActivity(status);
-    
-    statusIndex = (statusIndex + 1) % client.config.status.length;
-  };
-  
-  updateStatus();
-  setInterval(updateStatus, client.config.statusInterval || 30000);
-};
+import { Events } from "discord.js";
+
+export const name = Events.ClientReady;
+export const once = true;
+
+export async function execute(client) {
+  console.log("\n💫 SWENZY PROJECT Başarıyla Aktif Edildi!");
+  console.log(`🤖 ${client.user.tag} olarak giriş yapıldı!\n`);
+
+  console.log(`
+╔═════════════════════════════════════════════════════════════════════════╗
+║                                                                         ║
+║      ███████╗██╗    ██╗███████╗███╗   ██╗███████╗██╗   ██╗              ║
+║      ██╔════╝██║    ██║██╔════╝████╗  ██║╚══███╔╝╚██╗ ██╔╝              ║
+║      ███████╗██║ █╗ ██║█████╗  ██╔██╗ ██║  ███╔╝  ╚████╔╝               ║
+║      ╚════██║██║███╗██║██╔══╝  ██║╚██╗██║ ███╔╝    ╚██╔╝                ║
+║      ███████║╚███╔███╔╝███████╗██║ ╚████║███████╗   ██║                 ║
+║      ╚══════╝ ╚══╝╚══╝ ╚══════╝╚═╝  ╚═══╝╚══════╝   ╚═╝                 ║
+║                                                                         ║
+║                        💎 GENEL BOT 💎                                  ║ 
+║                   ❤️ Development By Swenzy ❤️                             ║
+╚═════════════════════════════════════════════════════════════════════════╝
+`);
+
+  // Durum ayarı (yayın modunda)
+  client.user.setPresence({
+    activities: [
+      {
+        name: "made by swènzy",
+        type: 1, // 1 = STREAMING
+        url: "https://twitch.tv/swenzyim"
+      }
+    ],
+    status: "dnd"
+  });
+}

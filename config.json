@@ -1,14 +1,15 @@
 {
-  "token": "Bot-Token",
+  "token": "BOT-TOKEN",
+  "clientId": "BOT-ID",
+  "guildId": "SUNUCU-ID",
   "prefix": ".",
-  "emoji": "📌",
-  "ownerID": "Owner-ID",
-  "version": "1.0",
-  "status": [
-    "www.youtube.com/@swenzyimm",
-    "discord.gg/react",
-    "www.youtube.com./@swenzyimm",
-    "discord.gg/react"
-  ],
-  "statusInterval": 30000
+  "ownerID": "SAHIB-ID",
+  "botName": "BOT-ISMI",
+  "status": "💫 Swenzy burada, her şey kontrolümde!",
+  "activityType": "PLAYING",
+  "guildLogChannel": "LOG-ID",
+  "afkMessage": "Şu anda AFK modundasın.",
+  "girisCikisKanal": "GIRIS-CIKIS-ID",
+  "version": "1.0.0"
+
 }

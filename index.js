@@ -1,83 +1,58 @@
-const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
-const fs = require('fs');
-const config = require('./config.json');
+import { Client, GatewayIntentBits, Collection, Partials } from "discord.js"; // © 2025 Excode | Swenzy Project
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import config from "./config.json" assert { type: "json" };
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+console.log("🚀 Swenzy Project Başlatılıyor...\n");
+
+// === Client oluşturma ===
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
-    GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.GuildEmojisAndStickers,
-    GatewayIntentBits.GuildMessageReactions
+    GatewayIntentBits.GuildMembers
   ],
-  partials: [
-    Partials.Channel,
-    Partials.Message,
-    Partials.Reaction
-  ]
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction]
 });
 
 client.commands = new Collection();
-client.aliases = new Collection();
-client.snipes = new Collection();
 
-client.config = config;
+// === Komutları yükleme ===
+const commandsPath = path.join(__dirname, "commands");
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
 
-const loadCommands = (dir = "./commands/") => {
-  fs.readdirSync(dir).forEach(dirContent => {
-    const stats = fs.statSync(`${dir}${dirContent}`);
-    if (stats.isDirectory()) {
-      loadCommands(`${dir}${dirContent}/`);
-    } else {
-      if (!dirContent.endsWith('.js')) return;
-      const command = require(`${dir}${dirContent}`);
-      client.commands.set(command.help.name, command);
-    }
-  });
-};
-
-const loadEvents = (dir = "./events/") => {
-  fs.readdirSync(dir).forEach(file => {
-    if (!file.endsWith('.js')) return;
-    const event = require(`${dir}${file}`);
-    const eventName = file.split('.')[0];
-    client.on(eventName, event.bind(null, client));
-  });
-};
-
-loadCommands();
-loadEvents();
-
-client.login(config.token).catch(err => {
-  console.error("Bot giriş hatası:", err);
-});
-
-client.on('messageDelete', message => {
-  if (message.author && !message.author.bot) {
-    client.snipes.set(message.channel.id, {
-      content: message.content,
-      author: message.author,
-      image: message.attachments.first() ? message.attachments.first().proxyURL : null,
-      timestamp: Date.now()
-    });
+for (const file of commandFiles) {
+  const filePath = path.join(commandsPath, file);
+  const command = await import(`file://${filePath}`);
+  if (command.data && command.execute) {
+    client.commands.set(command.data.name, command);
+    console.log(`✅ Komut yüklendi: ${file}`);
+  } else {
+    console.log(`⚠️ Hatalı komut atlandı: ${file}`);
   }
-});
+}
 
-process.on('unhandledRejection', error => {
-  console.error('Yakalanmamış hata:', error);
-});
-// Sunucu oluşturma ve proje aktivitesi sağlama.
-const express = require('express');
-const app = express();
-const port = 3000;
+// === Eventleri yükleme ===
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
 
-// Web sunucu
-app.get('/', (req, res) => {
-  res.sendStatus(200);
-});
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = await import(`file://${filePath}`);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args, client));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args, client));
+  }
+  console.log(`📂 Event yüklendi: ${file}`);
+}
 
-app.listen(port, () => {
-  console.log(`Sunucu ${port} numaralı bağlantı noktasında yürütülüyor.`);
+// === Giriş ===
+client.login(config.token).catch(err => {
+  console.error("❌ Token ile giriş yapılamadı:", err);
 });
