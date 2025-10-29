@@ -1,7 +1,3 @@
-// ===============================
-// 💎 SWENZY PROJECT - GENEL BOT 💎
-// ===============================
-
 import { Client, GatewayIntentBits, Collection, Partials } from "discord.js";
 import fs from "fs";
 import path from "path";
@@ -12,10 +8,8 @@ import config from "./config.json" assert { type: "json" };
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// === Konsol Başlangıcı ===
 console.log(chalk.cyanBright("\n🚀 Swenzy Project Başlatılıyor...\n"));
 
-// === Discord Client ===
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -28,7 +22,6 @@ const client = new Client({
 
 client.commands = new Collection();
 
-// === Komutları Yükleme ===
 try {
   const commandsPath = path.join(__dirname, "commands");
   const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
@@ -47,7 +40,6 @@ try {
   console.error(chalk.red("❌ Komut yükleme hatası:"), error);
 }
 
-// === Eventleri Yükleme ===
 try {
   const eventsPath = path.join(__dirname, "events");
   const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
@@ -66,7 +58,6 @@ try {
   console.error(chalk.red("❌ Event yükleme hatası:"), error);
 }
 
-// === Bot Girişi ===
 client.login(config.token)
   .then(() => {
     console.log(chalk.greenBright("\n💫 SWENZY PROJECT Başarıyla Aktif Edildi!"));
