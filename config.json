@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "token": "BOT-TOKEN",
   "clientId": "BOT-ID",
   "guildId": "SUNUCU-ID",
@@ -12,4 +13,18 @@
   "girisCikisKanal": "GIRIS-CIKIS-ID",
   "version": "1.0.0"
 
+=======
+  "token": "MTM4MDk0NTg4NDE3NDQ4NzY2NA.Gb8TyU.2gb9MHy7-vb2_y-UJy2nFnXpNwy71wiDQ00jqc",
+  "prefix": "x!",
+  "emoji": "📌",
+  "ownerID": "1195760072068972577",
+  "version": "1.0",
+  "status": [
+    "www.youtube.com/@swenzyimm",
+    "x!yardım | ExBOT",
+    "www.youtube.com./@swenzyimm",
+    "x!yardım | ExBOT"
+  ],
+  "statusInterval": 30000
+>>>>>>> 1c868b228bf351bb2eb794c4803d569afde35941
 }

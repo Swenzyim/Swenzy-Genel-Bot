@@ -37,9 +37,20 @@ for (const file of commandFiles) {
   }
 }
 
+<<<<<<< HEAD
 // === Eventleri yükleme ===
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".js"));
+=======
+process.on('unhandledRejection', error => {
+  console.error('Yakalanmamış hata:', error);
+});
+
+// Sunucu oluşturma ve proje aktivitesi sağlama.
+const express = require('express');
+const app = express();
+const port = 3000;
+>>>>>>> 1c868b228bf351bb2eb794c4803d569afde35941
 
 for (const file of eventFiles) {
   const filePath = path.join(eventsPath, file);
@@ -52,7 +63,12 @@ for (const file of eventFiles) {
   console.log(`📂 Event yüklendi: ${file}`);
 }
 
+<<<<<<< HEAD
 // === Giriş ===
 client.login(config.token).catch(err => {
   console.error("❌ Token ile giriş yapılamadı:", err);
+=======
+app.listen(port, () => {
+  console.log(`Sunucu ${port} numaralı bağlantı noktasında yürütülüyor.`);
+>>>>>>> 1c868b228bf351bb2eb794c4803d569afde35941
 });
