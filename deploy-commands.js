@@ -8,29 +8,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const commands = [];
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
+
+const foldersPath = path.join(__dirname, "commands");
+const commandFiles = fs.readdirSync(foldersPath).filter(file => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
+  const filePath = path.join(foldersPath, file);
   const command = await import(`file://${filePath}`);
-  if (command.data && command.data.toJSON) {
+  if (command.data) {
     commands.push(command.data.toJSON());
-    console.log(`✅ Komut yüklendi: ${file}`);
+    console.log(`✅ Komut yüklendi: ${command.data.name}`);
   } else {
-    console.log(`⚠️ Komut atlandı: ${file}`);
+    console.log(`⚠️ Geçersiz komut atlandı: ${file}`);
   }
 }
 
 const rest = new REST({ version: "10" }).setToken(config.token);
 
 try {
-  console.log("\n🚀 Komutlar Discord API’ye gönderiliyor...");
+  console.log("\n📡 Komutlar Discord API'ye gönderiliyor...");
+
   await rest.put(
-    Routes.applicationCommands(config.clientId), // global
+    Routes.applicationCommands(config.clientId),
     { body: commands }
   );
-  console.log("✅ Komutlar başarıyla yüklendi!");
+
+  console.log("💎 Tüm slash komutlar başarıyla yüklendi!");
 } catch (error) {
-  console.error("❌ Komutlar yüklenirken hata oluştu:", error);
+  console.error("❌ Komut yükleme hatası:", error);
 }
