@@ -1,50 +1,25 @@
-export const name = "interactionCreate";
-export const once = false;
+import { Events } from "discord.js";
+
+export const name = Events.InteractionCreate;
 
 export async function execute(interaction, client) {
-  if (!interaction.isButton()) return;
-  if (interaction.customId !== "ticket_olustur") return;
+  if (!interaction.isChatInputCommand()) return;
 
-  const guild = interaction.guild;
-  const member = interaction.member;
+  const command = client.commands.get(interaction.commandName);
 
-  const destekKategori = guild.channels.cache.find(ch => ch.name === "DESTEK TALEPLERİ" && ch.type === 4)
-    || await guild.channels.create({
-      name: "DESTEK TALEPLERİ",
-      type: 4
-    });
+  if (!command) {
+    console.log(`⚠️ Komut bulunamadı: ${interaction.commandName}`);
+    return;
+  }
 
-  const kanal = await guild.channels.create({
-    name: `destek-${member.user.username}`,
-    type: 0,
-    parent: destekKategori.id,
-    permissionOverwrites: [
-      {
-        id: guild.roles.everyone.id,
-        deny: ["ViewChannel"]
-      },
-      {
-        id: member.id,
-        allow: ["ViewChannel", "SendMessages", "AttachFiles", "ReadMessageHistory"]
-      }
-    ]
-  });
-
-  await interaction.reply({
-    content: `🎫 Destek talebin oluşturuldu: ${kanal}`,
-    ephemeral: true
-  });
-
-  const embed = {
-    title: "🎟️ Yeni Destek Talebi",
-    description: `> Kullanıcı: ${member}\n> Talep: ${kanal}`,
-    color: 0x5865f2
-  };
-
-  const logKanal = guild.channels.cache.find(ch => ch.name.toLowerCase().includes("log"));
-  if (logKanal) logKanal.send({ embeds: [embed] });
-
-  kanal.send({
-    content: `${member} hoş geldin! Destek ekibimiz yakında seninle ilgilenecektir.`
-  });
+  try {
+    await command.execute(interaction, client);
+  } catch (error) {
+    console.error(`❌ Komut çalıştırma hatası (${interaction.commandName}):`, error);
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({ content: "❌ Komut çalıştırılırken hata oluştu!", ephemeral: true });
+    } else {
+      await interaction.reply({ content: "❌ Komut çalıştırılırken hata oluştu!", ephemeral: true });
+    }
+  }
 }
