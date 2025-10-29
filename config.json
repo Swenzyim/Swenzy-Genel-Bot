@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "token": "BOT-TOKEN",
   "clientId": "BOT-ID",
   "guildId": "SUNUCU-ID",
@@ -12,3 +11,4 @@
   "afkMessage": "Şu anda AFK modundasın.",
   "girisCikisKanal": "GIRIS-CIKIS-ID",
   "version": "1.0.0"
+}
