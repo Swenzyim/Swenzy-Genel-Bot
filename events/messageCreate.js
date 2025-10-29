@@ -8,9 +8,6 @@ export default {
     // Bot mesajlarını yok say
     if (message.author.bot) return;
 
-    // =============================
-    // 🔹 SA-AS OTOMATİK CEVAP
-    // =============================
     const content = message.content.toLowerCase();
 
     if (["sa", "sea", "selam", "selamun aleyküm", "selamün aleyküm"].includes(content)) {
@@ -20,9 +17,6 @@ export default {
       return message.reply({ embeds: [embed] });
     }
 
-    // =============================
-    // 🔹 AFK SİSTEMİ
-    // =============================
 
     // Eğer kullanıcı AFK’ysa ve mesaj yazarsa
     if (client.afk.has(message.author.id)) {
