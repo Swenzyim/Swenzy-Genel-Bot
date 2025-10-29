@@ -5,19 +5,9 @@ import {
   ActionRowBuilder,
 } from "discord.js";
 
-<<<<<<< HEAD
 export const data = new SlashCommandBuilder()
   .setName("yardım")
   .setDescription("Tüm komut kategorilerini görüntülersin.");
-=======
-exports.run = async (client, message, args) => {
-  const embed = new EmbedBuilder()
-    .setTitle("ExBOT | Yardım Menüsü")
-    .setDescription("✅ Merhaba, **ExBOT** Yardım Menüsüne Hoşgeldin! 🎉\n\n➡️ Aşağıdaki menüden **ExBOT** botunda kullanabileceğin komutlar listelenecektir.\n\n📍 Eğer komutlarda hata veya bug görürsen <@1195760072068972577> veya [Yardım Sunucuma](https://discord.gg/excode) gelerek iletişime geçebilirsin")
-    .setColor("Random")
-    .setFooter({ text: `${client.user.username} | Sürüm ${client.config.version}`, iconURL: client.user.displayAvatarURL() })
-    .setTimestamp();
->>>>>>> 1c868b228bf351bb2eb794c4803d569afde35941
 
 export async function execute(interaction) {
   const categories = {
@@ -64,7 +54,6 @@ export async function execute(interaction) {
     "👑 Sahip": ["`/owner`", "`/bot`"],
   };
 
-<<<<<<< HEAD
   const selectMenu = new StringSelectMenuBuilder()
     .setCustomId("yardim-menu")
     .setPlaceholder("Bir kategori seçin 📂")
@@ -74,44 +63,6 @@ export async function execute(interaction) {
         description: `${kategori} komutlarını görüntüle`,
         value: kategori,
       }))
-=======
-  client.commands.forEach(cmd => {
-    switch(cmd.help.kategori) {
-      case "Kullanıcı":
-        kullanıcıKomutları.push(`\`${client.config.prefix}${cmd.help.name}\`: ${cmd.help.açıklama}`);
-        break;
-      case "Moderasyon":
-        moderasyonKomutları.push(`\`${client.config.prefix}${cmd.help.name}\`: ${cmd.help.açıklama}`);
-        break;
-      case "Sahip":
-        sahipKomutları.push(`\`${client.config.prefix}${cmd.help.name}\`: ${cmd.help.açıklama}`);
-        break;
-    }
-  });
-
-  const row = new ActionRowBuilder()
-    .addComponents(
-      new StringSelectMenuBuilder()
-        .setCustomId('help_menu')
-        .setPlaceholder('Bir kategori seçin')
-        .addOptions([
-          {
-            label: '🔧 Kullanıcı Komutları',
-            description: 'Herkesin kullanabileceği genel komutlar',
-            value: 'kullanıcı',
-          },
-          {
-            label: '🛡️ Moderasyon Komutları',
-            description: 'Yetkililerin kullanabileceği moderasyon komutları',
-            value: 'moderasyon',
-          },
-          {
-            label: '🛠️ Sahip Komutları',
-            description: 'Sadece bot sahibinin kullanabileceği komutlar',
-            value: 'sahip',
-          },
-        ]),
->>>>>>> 1c868b228bf351bb2eb794c4803d569afde35941
     );
 
   const row = new ActionRowBuilder().addComponents(selectMenu);
@@ -128,7 +79,6 @@ export async function execute(interaction) {
     components: [row],
   });
 
-<<<<<<< HEAD
   const collector = interaction.channel.createMessageComponentCollector({
     filter: (i) => i.user.id === interaction.user.id && i.customId === "yardim-menu",
     time: 60000,
@@ -140,24 +90,6 @@ export async function execute(interaction) {
 
     if (!komutlar) {
       return i.reply({ content: "Bu kategoriye ait komut bulunamadı!", ephemeral: true });
-=======
-    switch(selection) {
-      case 'kullanıcı':
-        updatedEmbed
-          .setTitle("ExBOT | Kullanıcı Komutları")
-          .setDescription(kullanıcıKomutları.join('\n'));
-        break;
-      case 'moderasyon':
-        updatedEmbed
-          .setTitle("ExBOT | Moderasyon Komutları")
-          .setDescription(moderasyonKomutları.join('\n'));
-        break;
-      case 'sahip':
-        updatedEmbed
-          .setTitle("ExBOT | Sahip Komutları")
-          .setDescription(sahipKomutları.join('\n'));
-        break;
->>>>>>> 1c868b228bf351bb2eb794c4803d569afde35941
     }
 
     const kategoriEmbed = new EmbedBuilder()
