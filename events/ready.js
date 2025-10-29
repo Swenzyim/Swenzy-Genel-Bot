@@ -22,7 +22,6 @@ export async function execute(client) {
 ╚═════════════════════════════════════════════════════════════════════════╝
 `);
 
-  // Durum ayarı (yayın modunda)
   client.user.setPresence({
     activities: [
       {
