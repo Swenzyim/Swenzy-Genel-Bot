@@ -12,7 +12,7 @@
 
 # Videolu Anlatım İçin Tıkla!
 
-[![Youtube Videosu](https://img.youtube.com/vi/0p4UkfppsuQ/0.jpg)](https://www.youtube.com/watch?v=0p4UkfppsuQ)
+[![Youtube Videosu](https://img.youtube.com/vi/0p4UkfppsuQ/0.jpg)](https://youtu.be/yHEEp5RJsuw?si=oKfL-qkje4iiwCTZ)
 
 ## Hata Aldıysan Discord Sunucumuza Gelebilirsin!
 
