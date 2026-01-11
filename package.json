@@ -1,9 +1,20 @@
 {
   "name": "swenzybot",
+  "version": "1.0.0",
+  "description": "Swenzy Discord Bot",
   "type": "module",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
   "dependencies": {
     "chalk": "^5.6.2",
     "discord.js": "^14.24.0",
     "dotenv": "^16.6.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
 }
