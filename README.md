@@ -16,5 +16,5 @@
 
 ## Hata Aldıysan Discord Sunucumuza Gelebilirsin!
 
-[![Discord Banner](https://api.weblutions.com/discord/invite/dre6UuQD/)](https://discord.gg/dre6UuQD)
+[![Discord Banner](https://api.weblutions.com/discord/invite/dre6UuQD/)](https://discord.gg/npm)
 
