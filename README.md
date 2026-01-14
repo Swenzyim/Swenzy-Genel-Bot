@@ -12,9 +12,9 @@
 
 # Videolu Anlatım İçin Tıkla!
 
-[![Youtube Videosu](https://youtu.be/yHEEp5RJsuw?si=oKfL-qkje4iiwCTZ)
+[![Youtube Videosu](https://www.youtube.com/watch?v=yHEEp5RJsuw&t=10s)
 
 ## Hata Aldıysan Discord Sunucumuza Gelebilirsin!
 
-[![Discord Banner](https://api.weblutions.com/discord/invite/dre6UuQD/)](https://discord.gg/npm)
+[![Discord Banner](https://api.weblutions.com/discord/invite/npm/)](https://discord.gg/npm)
 
